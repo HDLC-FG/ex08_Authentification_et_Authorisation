@@ -1,0 +1,53 @@
+﻿@using Web.Models.BO
+@model Livre
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Livre</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class = "col-sm-2">
+            Owner
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+    </dl>
+</div>
+<form asp-action="ApproveOrReject" style="display:inline;" method="post">
+    <input type="hidden" name="id" value="@Model.LivreId" />
+    <input type="hidden" name="status" value="@LivreStatus.Approved" />
+    <button type="submit" class="btn btn-xs btn-success">Approve</button>
+</form>
+<form asp-action="ApproveOrReject" style="display:inline;" method="post">
+    <input type="hidden" name="id" value="@Model.LivreId" />
+    <input type="hidden" name="status" value="@LivreStatus.Rejected" />
+    <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+</form>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.LivreId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
