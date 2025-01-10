@@ -157,10 +157,10 @@ namespace Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Livres",
+                name: "Books",
                 columns: table => new
                 {
-                    LivreId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -169,9 +169,9 @@ namespace Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Livres", x => x.LivreId);
+                    table.PrimaryKey("PK_Books", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Livres_AspNetUsers_UserId",
+                        name: "FK_Books_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
@@ -217,8 +217,8 @@ namespace Web.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Livres_UserId",
-                table: "Livres",
+                name: "IX_Books_UserId",
+                table: "Books",
                 column: "UserId");
         }
 
@@ -241,7 +241,7 @@ namespace Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Livres");
+                name: "Books");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

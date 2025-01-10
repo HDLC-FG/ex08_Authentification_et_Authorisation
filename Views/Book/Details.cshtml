@@ -1,13 +1,12 @@
 ﻿@using Web.Models.BO
-@model Livre
+@model Book
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
 }
 
-<h1>Delete</h1>
+<h1>Details</h1>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Livre</h4>
     <hr />
@@ -37,10 +36,18 @@
             @Html.DisplayFor(model => model.UserId)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="LivreId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+</div>
+<form asp-action="ApproveOrReject" style="display:inline;" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <input type="hidden" name="status" value="@BookStatus.Available" />
+    <button type="submit" class="btn btn-xs btn-success">Available</button>
+</form>
+<form asp-action="ApproveOrReject" style="display:inline;" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <input type="hidden" name="status" value="@BookStatus.Borrowed" />
+    <button type="submit" class="btn btn-xs btn-danger">Borrowed</button>
+</form>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>

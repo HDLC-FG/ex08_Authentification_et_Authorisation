@@ -2,21 +2,20 @@
 
 namespace Web.Models.BO
 {
-    public class Livre
+    public class Book
     {
-        public int LivreId { get; set; }
+        public int Id { get; set; }
         public string Content { get; set; }
         public DateTime CreatedDate { get; set; }
-        public LivreStatus Status { get; set; }
+        public BookStatus Status { get; set; }
         //Id de l'utilisateur propriétaire du livre (issu de la Table AspNetUser)
         public string? UserId { get; set; }
         public virtual IdentityUser? User { get; set; }
     }
 
-    public enum LivreStatus
+    public enum BookStatus
     {
-        Submitted,
-        Approved,
-        Rejected
+        Available,
+        Borrowed
     }
 }

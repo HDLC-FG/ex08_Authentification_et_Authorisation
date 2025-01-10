@@ -11,6 +11,6 @@ namespace Web.Data
         {
         }
 
-        public DbSet<Livre> Livres { get; set; }
+        public DbSet<Book> Books { get; set; }
     }
 }

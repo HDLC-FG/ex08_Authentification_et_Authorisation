@@ -1,5 +1,5 @@
 ﻿@using Web.Models.BO
-@model Livre
+@model Book
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,7 +13,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="LivreId" />
+            <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>

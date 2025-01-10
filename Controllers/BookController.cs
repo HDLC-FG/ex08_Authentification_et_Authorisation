@@ -9,11 +9,11 @@ using Web.Models.BO;
 
 namespace Web.Controllers
 {
-    public class LivresController : BaseController
+    public class BookController : BaseController
     {
         private readonly ApplicationDbContext _context;
 
-        public LivresController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public BookController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
         }
@@ -21,7 +21,7 @@ namespace Web.Controllers
         // GET: Livres
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Livres.ToListAsync());
+            return View(await _context.Books.ToListAsync());
         }
 
         // GET: Livres/Details/5
@@ -32,8 +32,8 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var livre = await _context.Livres
-                .FirstOrDefaultAsync(m => m.LivreId == id);
+            var livre = await _context.Books
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (livre == null)
             {
                 return NotFound();
@@ -53,7 +53,7 @@ namespace Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LivreId,Content,CreatedDate,Status,UserId")] Livre livre)
+        public async Task<IActionResult> Create([Bind("LivreId,Content,CreatedDate,Status,UserId")] Book livre)
         {
             if (ModelState.IsValid)
             {
@@ -68,16 +68,14 @@ namespace Web.Controllers
         // GET: Livres/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var livre = await _context.Livres.FindAsync(id);
-            if (livre == null)
-            {
-                return NotFound();
-            }
+            var livre = await _context.Books.FindAsync(id);
+
+            if (livre == null) return NotFound();
+            var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (livre.UserId != user) return Unauthorized();
+            
             return View(livre);
         }
 
@@ -86,9 +84,9 @@ namespace Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LivreId,Content,CreatedDate,Status,UserId")] Livre livre)
+        public async Task<IActionResult> Edit(int id, [Bind("LivreId,Content,CreatedDate,Status,UserId")] Book livre)
         {
-            if (id != livre.LivreId)
+            if (id != livre.Id)
             {
                 return NotFound();
             }
@@ -102,7 +100,7 @@ namespace Web.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LivreExists(livre.LivreId))
+                    if (!LivreExists(livre.Id))
                     {
                         return NotFound();
                     }
@@ -125,8 +123,8 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var livre = await _context.Livres
-                .FirstOrDefaultAsync(m => m.LivreId == id);
+            var livre = await _context.Books
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (livre == null)
             {
                 return NotFound();
@@ -140,18 +138,18 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var livre = await _context.Livres.FindAsync(id);
-            _context.Livres.Remove(livre);
+            var livre = await _context.Books.FindAsync(id);
+            _context.Books.Remove(livre);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ApproveOrReject(int id, LivreStatus status)
+        public async Task<IActionResult> ApproveOrReject(int id, BookStatus status)
         {
-            var livre = await _context.Livres.FirstOrDefaultAsync(
-                                          m => m.LivreId == id);
+            var livre = await _context.Books.FirstOrDefaultAsync(
+                                          m => m.Id == id);
 
             if (livre == null)
             {
@@ -159,14 +157,14 @@ namespace Web.Controllers
             }
 
             livre.Status = status;
-            _context.Livres.Update(livre);
+            _context.Books.Update(livre);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LivreExists(int id)
         {
-            return _context.Livres.Any(e => e.LivreId == id);
+            return _context.Books.Any(e => e.Id == id);
         }
     }
 }
